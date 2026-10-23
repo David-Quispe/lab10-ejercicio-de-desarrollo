@@ -39,7 +39,8 @@ class EventFlowViewModel(private val api: EventFlowApi = ApiProvider.api): ViewM
                 val fallo = interpretarError(e)
                 if(fallo.sesionInvalida) token = null
                 mutable.update { it.copy(error=fallo.mensaje,errores=fallo.campos,
-                    usuario=if(fallo.sesionInvalida) null else it.usuario) }
+                    usuario=if(fallo.sesionInvalida) null else it.usuario,
+                    borrar=if(fallo.sesionInvalida) null else it.borrar) }
             } finally { mutable.update { it.copy(busy=false) } }
         }
     }
@@ -68,7 +69,7 @@ class EventFlowViewModel(private val api: EventFlowApi = ApiProvider.api): ViewM
     }
     private fun autorizado(): Boolean {
         if(token != null) return true
-        mutable.update { it.copy(pantalla=Pantalla.CUENTA,error=null,aviso="Inicia sesión para registrar, editar o eliminar espacios.") }
+        mutable.update { it.copy(pantalla=Pantalla.CUENTA,error=null,borrar=null,aviso="Inicia sesión para registrar, editar o eliminar espacios.") }
         return false
     }
     fun nuevo() {

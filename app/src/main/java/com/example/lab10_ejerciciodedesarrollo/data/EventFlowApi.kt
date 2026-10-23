@@ -62,7 +62,7 @@ fun interpretarError(error: Throwable): Fallo {
             json.entrySet().associate { (key,value) -> key to if (value.isJsonArray) value.asJsonArray.joinToString(" ") { it.asString } else if (value.isJsonPrimitive) value.asString else "Revisa este campo." }
         }.getOrDefault(emptyMap())
         val mensaje = when(error.code()) {
-            400 -> fields["detail"] ?: fields["non_field_errors"] ?: "Revisa los campos indicados."
+            400 -> if(fields["non_field_errors"]?.contains("Unable to log in",ignoreCase=true) == true) "Usuario o contraseña incorrectos. Revisa tus datos." else fields["detail"] ?: fields["non_field_errors"] ?: "Revisa los campos indicados."
             401,403 -> "No se pudo autorizar la operación. Inicia sesión con una cuenta válida."
             404 -> "Este espacio ya no está disponible. Actualiza la lista."
             else -> "El servidor no pudo completar la operación. Inténtalo de nuevo."

@@ -1,6 +1,8 @@
 package com.example.lab10_ejerciciodedesarrollo
 
 import android.content.Context
+import android.app.Activity
+import androidx.core.view.WindowCompat
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -48,7 +50,15 @@ fun EventFlowApp(vm: EventFlowViewModel = viewModel()) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("appearance", Context.MODE_PRIVATE) }
     var dark by rememberSaveable { mutableStateOf(prefs.getBoolean("dark",false)) }
-    BackHandler(s.pantalla != Pantalla.ESPACIOS && !s.busy) { vm.navegar(Pantalla.ESPACIOS) }
+    BackHandler(s.pantalla != Pantalla.ESPACIOS) { if(!s.busy) vm.navegar(Pantalla.ESPACIOS) }
+    SideEffect {
+        (context as? Activity)?.window?.let { window ->
+            WindowCompat.getInsetsController(window,window.decorView).apply {
+                isAppearanceLightStatusBars = !dark
+                isAppearanceLightNavigationBars = !dark
+            }
+        }
+    }
     EventFlowTheme(dark) {
         Scaffold(
             topBar = { TopAppBar(
