@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -67,7 +68,7 @@ fun EventFlowApp(vm: EventFlowViewModel = viewModel()) {
                     Text("EventFlow",fontWeight=FontWeight.Bold,letterSpacing=(-0.8).sp)
                 } },
                 navigationIcon = { if(s.pantalla == Pantalla.EDITOR) IconButton(onClick={vm.navegar(Pantalla.ESPACIOS)},enabled=!s.busy) { Icon(Icons.AutoMirrored.Filled.ArrowBack,"Volver a espacios") } },
-                actions = { TextButton(onClick={dark=!dark;prefs.edit().putBoolean("dark",dark).apply()}) { Text(if(dark) "Tema claro" else "Tema oscuro") } },
+                actions = { IconButton(onClick={dark=!dark;prefs.edit().putBoolean("dark",dark).apply()}) { Icon(painterResource(if(dark) R.drawable.ic_theme_sun else R.drawable.ic_theme_moon),if(dark) "Activar tema claro" else "Activar tema oscuro") } },
                 colors=TopAppBarDefaults.topAppBarColors(containerColor=MaterialTheme.colorScheme.background),
             ) },
             bottomBar = { if(s.pantalla != Pantalla.EDITOR) {
