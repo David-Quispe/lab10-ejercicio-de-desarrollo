@@ -32,7 +32,7 @@ interface EventFlowApi {
     @DELETE("espacios/{id}/") suspend fun eliminar(@Header("Authorization") auth: String, @Path("id") id: Int)
 }
 object ApiProvider {
-    const val BASE_URL = "http://172.22.159.90:8000/api/"
+    const val BASE_URL = "http://10.0.2.2:8000/api/"
     val api: EventFlowApi by lazy {
         Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build().create(EventFlowApi::class.java)
     }
